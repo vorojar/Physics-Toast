@@ -1,10 +1,31 @@
 # Physics Toast
 
-[中文文档](./README.zh-CN.md)
+[中文文档](./README.zh-CN.md) | [Live Demo](https://vorojar.github.io/Physics-Toast/)
 
-Dynamic Island style toast notifications with spring physics animation. Zero dependencies, single-script SDK.
+Dynamic Island style toast notifications powered by a real spring physics engine. Zero dependencies, single-script SDK.
 
-Inspired by [Sileo](https://github.com/hiaaryan/sileo) (React) — this is a **vanilla JS rewrite** that runs anywhere without a framework.
+Inspired by [Sileo](https://github.com/hiaaryan/sileo) (React) — rebuilt from the ground up as **pure vanilla JS**, runs anywhere without a framework, bundler, or build step.
+
+## Why Physics Toast over Sileo?
+
+| | **Physics Toast** | **Sileo** |
+|---|---|---|
+| **Dependencies** | 0 — drop two files and go | React 18+, framer-motion, tailwindcss |
+| **Bundle size** | ~20 KB total (CSS 7 KB + JS 13 KB) | ~200 KB+ (React runtime alone is 40 KB+) |
+| **Animation engine** | Real spring physics (`F = -kx - cv`), sub-step integrated at ≤4 ms | CSS keyframes / framer-motion presets |
+| **SVG Gooey morph** | Pill + body fuse through `feGaussianBlur` + `feColorMatrix` — true Dynamic Island feel | Static rounded rectangles |
+| **Interrupt behavior** | Same-position toast crossfades in-place with physics continuity — no flash, no stack | Toasts stack or queue |
+| **Position support** | 6 positions (top/bottom × left/center/right) | Limited positions |
+| **Integration** | Two `<script>`/`<link>` tags, works in any HTML page | JSX components, requires React project |
+| **Shared SVG filter** | Single global `<filter>` reused by all toasts | Per-toast filter overhead |
+
+### In short
+
+- **No React, no build tools, no node_modules** — just include the files and call `toast.success()`.
+- **Physically accurate spring animation** — every morph, expand, and collapse is driven by a real damped spring simulation, not canned easing curves. The result is fluid, organic motion that responds naturally to interrupts.
+- **Dynamic Island gooey effect done right** — the pill and body are separate SVG shapes fused through a shared gaussian blur + color matrix filter, creating the iconic liquid merge that Sileo approximates with border-radius alone.
+- **Interrupt = physics continuity** — if a new toast arrives mid-animation, the spring picks up from the current velocity. No reset, no jump, no stacking. Just a seamless crossfade.
+- **20 KB vs 200 KB+** — the entire SDK is smaller than React's runtime alone.
 
 ## Features
 

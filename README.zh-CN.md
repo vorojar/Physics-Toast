@@ -1,10 +1,31 @@
 # Physics Toast
 
-[English](./README.md)
+[English](./README.md) | [在线演示](https://vorojar.github.io/Physics-Toast/)
 
-灵动岛风格的 Toast 通知，基于弹簧物理引擎驱动动画。零依赖，单脚本 SDK。
+灵动岛风格的 Toast 通知，基于真实弹簧物理引擎驱动动画。零依赖，单脚本 SDK。
 
-灵感来自 [Sileo](https://github.com/hiaaryan/sileo)（React 库）— 本项目为**纯原生 JS 重写**，无需任何框架即可运行。
+灵感来自 [Sileo](https://github.com/hiaaryan/sileo)（React 库）— 从零开始**纯原生 JS 重写**，无需任何框架、打包工具或构建步骤即可运行。
+
+## 为什么选 Physics Toast 而不是 Sileo？
+
+| | **Physics Toast** | **Sileo** |
+|---|---|---|
+| **依赖** | 0 — 放两个文件就能用 | React 18+、framer-motion、tailwindcss |
+| **体积** | ~20 KB（CSS 7 KB + JS 13 KB） | ~200 KB+（光 React 运行时就 40 KB+） |
+| **动画引擎** | 真实弹簧物理（`F = -kx - cv`），≤4 ms 子步进积分 | CSS 关键帧 / framer-motion 预设 |
+| **SVG Gooey 融合** | pill + body 通过 `feGaussianBlur` + `feColorMatrix` 融合 — 真正的灵动岛质感 | 静态圆角矩形 |
+| **中断行为** | 同位置 toast 原地 crossfade，物理状态连续 — 无闪烁、无堆叠 | toast 堆叠或排队 |
+| **位置支持** | 6 个位置（上/下 × 左/中/右） | 位置有限 |
+| **接入方式** | 两个 `<script>`/`<link>` 标签，任意 HTML 页面可用 | JSX 组件，需要 React 项目 |
+| **SVG 滤镜共享** | 全局单个 `<filter>` 复用 | 每个 toast 独立滤镜开销 |
+
+### 一句话总结
+
+- **不需要 React，不需要构建工具，不需要 node_modules** — 引入文件，调用 `toast.success()` 就完事了。
+- **物理级精确的弹簧动画** — 每一次变形、展开、收起都由真实阻尼弹簧模拟驱动，而非预设缓动曲线。动画流畅、有机，中断时自然衔接。
+- **灵动岛 Gooey 效果做对了** — pill 和 body 是两个独立 SVG 形状，通过共享高斯模糊 + 颜色矩阵滤镜融合，形成标志性的液态合并效果。Sileo 仅靠 border-radius 近似。
+- **中断 = 物理连续** — 新 toast 在动画中途到来时，弹簧从当前速度继续。没有重置，没有跳变，没有堆叠。只有无缝 crossfade。
+- **20 KB vs 200 KB+** — 整个 SDK 比 React 的运行时还小。
 
 ## 特性
 
