@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physics Toast - Dynamic Island Style</title>
+  <link rel="stylesheet" href="physics-toast.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: rgb(249 247 245 / var(--tw-bg-opacity, 1));
+      color: #1c1c1e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    /* ================================== Demo =================================== */
+    .demo-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .demo-panel button {
+      padding: 10px 20px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.04);
+      color: #1c1c1e;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 150ms ease, transform 100ms ease;
+    }
+
+    .demo-panel button:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .demo-panel button:active {
+      transform: scale(0.96);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1c1c1e;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      margin-bottom: 0.5rem;
+    }
+
+    .position-picker {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 0.5rem;
+      padding: 0 1rem;
+    }
+
+    .position-picker button {
+      padding: 6px 10px;
+      font-size: 11px;
+      border-radius: 8px;
+    }
+
+    .position-picker button.active {
+      background: rgba(0, 0, 0, 0.1);
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Physics Toast</h1>
+  <p class="subtitle">Dynamic Island style / Spring physics engine / Zero dependencies</p>
+  <div class="position-picker" id="posPicker"></div>
+
+  <div class="demo-panel">
+    <button
+      onclick="toast.success('Changes Saved', 'Changes saved successfully to the database. Please refresh the page to see the changes.')">Success</button>
+    <button onclick="toast.error('Error', 'Network connection failed. Please check your settings.')">Error</button>
+    <button onclick="toast.warning('Warning', 'Storage space is running low. Please clean up files.')">Warning</button>
+    <button onclick="toast.info('Info', 'Version 2.0 has been released with many improvements.')">Info</button>
+    <button onclick="demoPromise()">Promise</button>
+    <button onclick="demoAction()">Action</button>
+    <button onclick="toast.clear()" style="border-color: rgba(220, 50, 50, 0.4); color: #c03030">Clear All</button>
+  </div>
+
+  <script src="physics-toast.min.js"></script>
+  <script>
+    // ============================================================
+    //  Position Picker
+    // ============================================================
+    const posPicker = document.getElementById('posPicker');
+
+    const POSITIONS = [
+      'top-left', 'top-center', 'top-right',
+      'bottom-left', 'bottom-center', 'bottom-right',
+    ];
+
+    const POSITION_LABELS = {
+      'top-left': 'Top Left',
+      'top-center': 'Top',
+      'top-right': 'Top Right',
+      'bottom-left': 'Bottom Left',
+      'bottom-center': 'Bottom',
+      'bottom-right': 'Bottom Right',
+    };
+
+    function renderPicker() {
+      posPicker.innerHTML = '';
+      for (const pos of POSITIONS) {
+        const btn = document.createElement('button');
+        btn.textContent = POSITION_LABELS[pos];
+        if (toast.defaults.position === pos) {
+          btn.classList.add('active');
+        }
+        btn.onclick = () => {
+          toast.defaults.position = pos;
+          renderPicker();
+        };
+        posPicker.appendChild(btn);
+      }
+    }
+
+    renderPicker();
+
+    // ============================================================
+    //  Demo Functions
+    // ============================================================
+    function demoPromise() {
+      toast.promise(
+        'Uploading...',
+        () => new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.3 ? resolve : reject, 2000);
+        }),
+        {
+          success: {
+            title: 'Upload Complete',
+            description: 'Your file has been uploaded successfully and is now available for download.',
+          },
+          error: {
+            title: 'Upload Failed',
+            description: 'The connection was interrupted. Please check your network and try again.',
+          },
+        }
+      );
+    }
+
+    function demoAction() {
+      toast.action(
+        'New Message',
+        'You received a message from Alice: "The meeting has been rescheduled to 3 PM tomorrow."',
+        'View Message',
+        () => console.log('view clicked')
+      );
+    }
+  </script>
+
+  <p style="position:fixed;bottom:1rem;left:0;right:0;text-align:center;font-size:0.75rem;color:#a1a1a6;">
+    Inspired by <a href="https://github.com/hiaaryan/sileo" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Sileo</a> by hiaaryan
+  </p>
+</body>
+
+</html>
